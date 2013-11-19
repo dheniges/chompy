@@ -12,9 +12,6 @@ require 'pry-nav'
 class Chompy
   POLLING_FREQUENCY = 5
 
-  # Stores list of plugins
-  @@plugins
-
   attr_accessor :api, 
                 :room, 
                 :stop_poll, 
@@ -54,12 +51,6 @@ class Chompy
     chat(message, 'html')
   end
 
-  def self.register_plugin(klass)
-    @@plugins ||= []
-    @@plugins << klass
-    include klass
-  end
-
   protected
 
   def retrieve_new_messages
@@ -95,9 +86,9 @@ class Chompy
       text = message['message'].downcase
       next unless text =~ /^\(chompy\)/
 
-      chat_hook(text)
-
       case text
+      when /showme(.*)$/
+        image_search($1.strip)
       when /die/
         chat('Goodbye')
         self.stop_poll = true
@@ -105,11 +96,26 @@ class Chompy
     end
   end
 
-  # Invokes plugins with chat messages
-  # so they can respond appropriately
-  def chat_hook(text)
-    @@plugins.each do |plugin|
-      plugin.chat(text)
+  def image_search(search_text)
+    puts "Image searching: #{search_text}"
+
+    url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=#{CGI::escape(search_text)}"
+    uri = URI.parse(url)
+
+    begin
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      request = Net::HTTP::Get.new(uri.request_uri, {
+        'Referer' => 'http://tailorwell.com'
+      })
+      response = http.request(request)
+
+      results = JSON.load(response.body)
+      img = results['responseData']['results'].first
+      image_chat(img['tbUrl'], img['originalContextUrl'])      
+    rescue
+      chat('search failed')
     end
   end
 
