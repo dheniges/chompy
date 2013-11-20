@@ -89,10 +89,22 @@ class Chompy
       case text
       when /showme(.*)$/
         image_search($1.strip)
+      when /goto(.*)$/
+        switch_room($1.strip)
       when /die/
         chat('Goodbye')
         self.stop_poll = true
       end
+    end
+  end
+
+  def switch_room(name)
+    new_room = api.rooms_list['rooms'].detect{|r| r['name'].downcase.eql?(name) }
+    if new_room
+      self.room = new_room
+      self.last_updated_at = nil
+    else 
+      chat('Room not found')
     end
   end
 
