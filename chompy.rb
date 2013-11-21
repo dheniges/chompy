@@ -103,6 +103,7 @@ class Chompy
     if new_room
       self.room = new_room
       self.last_updated_at = nil
+      chat("I is here!")
     else 
       chat('Room not found')
     end
