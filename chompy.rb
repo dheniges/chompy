@@ -155,5 +155,5 @@ class Chompy
 
 end
 
-chompy = Chompy.new('48b2b26956a7874559c6d80ef85f80')
+chompy = Chompy.new('API_KEY')
 chompy.chomp('Tailorwell Dev Chat')
