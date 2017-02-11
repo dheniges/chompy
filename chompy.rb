@@ -5,8 +5,6 @@ require 'json'
 require 'net/http'
 require 'uri'
 require 'cgi'
-require 'pry'
-require 'pry-nav'
 
 
 class Chompy
