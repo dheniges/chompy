@@ -11,10 +11,11 @@ A simple ruby-based HipChat bot.
 5. Run `ruby chompy.rb` to start Chompy.
 
 ## Features
-Address Chompy in the chat as `chompy [command]`
-**Commands**
-`goto [room]`- Chompy will leave the current chatroom and go to the specified room.
-`showme [search term]` - Performs a google image search and posts the result to the room.
+Address Chompy in the chat as `chompy [command]`  
+
+**Commands**  
+`goto [room]`- Chompy will leave the current chatroom and go to the specified room.  
+`showme [search term]` - Performs a google image search and posts the result to the room.  
 `die` - Chompy stops obeying commands
 
 ## Roadmap
